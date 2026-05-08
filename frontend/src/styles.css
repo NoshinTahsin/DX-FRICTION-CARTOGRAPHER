@@ -85,20 +85,18 @@ textarea {
   font-weight: 700;
 }
 
-.status-pill {
-  background: #24324c;
-  border: 1px solid #3a4b6d;
-  border-radius: 999px;
-  color: #dce7f7;
-  font-size: 13px;
-  padding: 6px 12px;
-}
-
 .workspace {
   display: grid;
   gap: 20px;
   grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   padding: 20px;
+}
+
+.site-footer {
+  color: #637087;
+  font-size: 13px;
+  padding: 0 20px 20px;
+  text-align: center;
 }
 
 .panel {

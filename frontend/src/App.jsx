@@ -215,7 +215,6 @@ export default function App() {
       <div className={!isUnlocked ? "locked-shell" : ""} aria-hidden={!isUnlocked}>
         <header className="topbar">
           <div className="brand">DX Friction Cartographer</div>
-          <div className="status-pill">API: http://127.0.0.1:8000/analyze</div>
         </header>
 
         <section className="workspace">
@@ -355,6 +354,9 @@ export default function App() {
             </div>
           )}
         </section>
+        <footer className="site-footer">
+          Copyright (c) 2026 Noshin Tahsin. All rights reserved.
+        </footer>
       </section>
       </div>
     </main>
