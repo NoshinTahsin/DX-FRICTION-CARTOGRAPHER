@@ -440,7 +440,7 @@ textarea {
   z-index: 6;
 }
 
-.rationale-tag:hover .rationale-content,
+.rationale-tag.tooltip-active .rationale-content,
 .rationale-tag:focus-within .rationale-content {
   display: block;
 }
@@ -501,9 +501,14 @@ textarea {
   z-index: 5;
 }
 
-.reference-popover:hover .reference-content,
+.reference-popover.tooltip-active .reference-content,
 .reference-popover:focus-within .reference-content {
   display: block;
+}
+
+.tooltips-disabled .reference-content,
+.tooltips-disabled .rationale-content {
+  display: none !important;
 }
 
 .count {

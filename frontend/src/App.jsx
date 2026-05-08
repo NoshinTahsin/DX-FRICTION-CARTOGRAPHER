@@ -53,6 +53,51 @@ export default function App() {
     return () => window.clearInterval(timer);
   }, [isLoading]);
 
+  useEffect(() => {
+    function closeTooltips() {
+      document.querySelectorAll(".tooltip-active").forEach((element) => {
+        element.classList.remove("tooltip-active");
+      });
+      document.body.classList.add("tooltips-disabled");
+    }
+
+    function handlePointerOver(event) {
+      const trigger = event.target.closest(".reference-popover, .rationale-tag");
+      if (!trigger) {
+        document.body.classList.remove("tooltips-disabled");
+        return;
+      }
+
+      if (document.body.classList.contains("tooltips-disabled")) return;
+      trigger.classList.add("tooltip-active");
+    }
+
+    function handlePointerOut(event) {
+      const trigger = event.target.closest(".reference-popover, .rationale-tag");
+      if (!trigger || trigger.contains(event.relatedTarget)) return;
+      trigger.classList.remove("tooltip-active");
+    }
+
+    function enableTooltipsAwayFromTrigger(event) {
+      if (event.target.closest(".reference-popover, .rationale-tag")) return;
+      document.body.classList.remove("tooltips-disabled");
+    }
+
+    window.addEventListener("scroll", closeTooltips, true);
+    window.addEventListener("wheel", closeTooltips, { passive: true });
+    window.addEventListener("pointerover", handlePointerOver);
+    window.addEventListener("pointerout", handlePointerOut);
+    window.addEventListener("pointermove", enableTooltipsAwayFromTrigger);
+
+    return () => {
+      window.removeEventListener("scroll", closeTooltips, true);
+      window.removeEventListener("wheel", closeTooltips);
+      window.removeEventListener("pointerover", handlePointerOver);
+      window.removeEventListener("pointerout", handlePointerOut);
+      window.removeEventListener("pointermove", enableTooltipsAwayFromTrigger);
+    };
+  }, []);
+
   async function validateAccessCode() {
     const normalizedAccessCode = accessCode.trim();
     setAuthError("");
