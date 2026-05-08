@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 
 def classify_friction_points(friction_signals: List[str]) -> List[FrictionPoint]:
     """Classify friction signals against DX dimensions."""
+    if not friction_signals:
+        return []
+
     friction_signals_text = "\n".join(f"- {signal}" for signal in friction_signals)
     prompt = build_classification_prompt()
     user_message = f"{prompt}\n\nFRICTION SIGNALS:\n{friction_signals_text}"

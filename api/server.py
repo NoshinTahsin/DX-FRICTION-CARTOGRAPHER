@@ -2,10 +2,10 @@
 # Exposes endpoints for transcript ingestion, JSON output, and export generation
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env", override=True)
 
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pipeline import run_pipeline
 from api.models import AnalyzeRequest, AnalysisResult
@@ -21,20 +21,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def validate_access_code(submitted_code: str | None) -> None:
+    access_code = (os.getenv("APP_ACCESS_CODE") or "").strip()
+    submitted_access_code = (submitted_code or "").strip()
+    if access_code and submitted_access_code != access_code:
+        raise HTTPException(status_code=401, detail="Invalid access code")
+
+
+@app.post("/auth/validate")
+async def validate_app_access(x_app_access_code: str | None = Header(default=None)):
+    """Validate the shared app access code without running an analysis."""
+    validate_access_code(x_app_access_code)
+    return {"ok": True}
+
 @app.post("/analyze", response_model=AnalysisResult)
-async def analyze_transcript(request: AnalyzeRequest) -> AnalysisResult:
+async def analyze_transcript(
+    request: Request,
+    payload: AnalyzeRequest,
+    x_app_access_code: str | None = Header(default=None),
+) -> AnalysisResult:
     """Analyze a developer interview transcript for DX friction."""
     try:
         # Validate API key
         if not os.getenv("OPENAI_API_KEY"):
             raise HTTPException(status_code=500, detail="OpenAI API key not configured")
 
+        validate_access_code(x_app_access_code)
+
         # Run the analysis pipeline
-        result = run_pipeline(request.transcript)
+        result = run_pipeline(payload.transcript)
         return result
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
@@ -47,4 +69,4 @@ async def startup_event():
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
-    return {"status": "healthy"}
+    return {"status": "healthy", "access_code_required": bool((os.getenv("APP_ACCESS_CODE") or "").strip())}

@@ -14,19 +14,30 @@ export default function ToolsTable({ tools = [] }) {
             </tr>
           </thead>
           <tbody>
-            {tools.map((item, index) => (
-              <tr key={`${item.stage}-${index}`}>
-                <td>{item.stage}</td>
-                <td>
-                  <div className="tag-list">
-                    {item.tools.map((tool) => (
-                      <span className="tag" key={tool}>{tool}</span>
-                    ))}
-                  </div>
-                </td>
-                <td>{item.notes}</td>
+            {tools.length ? tools.map((item, index) => {
+              const itemTools = item.tools.filter(Boolean);
+              return (
+                <tr key={`${item.stage}-${index}`}>
+                  <td>{item.stage || <span className="muted-value">No stage mentioned</span>}</td>
+                  <td>
+                    {itemTools.length ? (
+                      <div className="tag-list">
+                        {itemTools.map((tool) => (
+                          <span className="tag" key={tool}>{tool}</span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="muted-value">No tool mentioned</span>
+                    )}
+                  </td>
+                  <td>{item.notes || <span className="muted-value">No notes mentioned</span>}</td>
+                </tr>
+              );
+            }) : (
+              <tr>
+                <td className="empty-row" colSpan="3">No tools mentioned in this transcript.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

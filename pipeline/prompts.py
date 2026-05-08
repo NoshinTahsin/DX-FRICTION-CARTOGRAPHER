@@ -12,6 +12,8 @@ STAGES: {stages_text}
 
 For each stage mentioned in the transcript, list all tools and technologies used.
 Also extract all friction signals (problems, frustrations, inefficiencies).
+If the transcript does not mention any tools, return an empty tools_inventory array.
+If the transcript does not mention any problems, frustrations, or inefficiencies, return an empty friction_signals array.
 
 Return ONLY valid JSON like this:
 {{"tools_inventory": [{{"stage": "Planning", "tools": ["Jira"], "notes": "vague"}}, {{"stage": "Coding", "tools": ["VS Code"], "notes": "slow"}}], "friction_signals": ["Requirements change constantly", "Reviews are slow"]}}
@@ -36,9 +38,10 @@ DX DIMENSIONS:
 
 For each friction signal, assign 1-3 dimensions that are clearly affected.
 Infer stage, how_often, pain_level (1-5), and who_affects from context.
+Also include a concise justification explaining the transcript evidence behind the frequency, pain level, affected people, and selected dimensions.
 
 Return ONLY valid JSON object like this:
-{{"friction_points": [{{"stage": "Planning", "friction_label": "Unclear requirements", "example": "Requirements change mid-sprint", "how_often": "Weekly", "pain_level": 4, "who_affects": "All developers", "dimensions": ["goal_clarity", "flow_state"]}}, {{"stage": "Testing", "friction_label": "Flaky tests", "example": "Tests fail randomly", "how_often": "Daily", "pain_level": 5, "who_affects": "All developers", "dimensions": ["feedback_loops"]}}]}}
+{{"friction_points": [{{"stage": "Planning", "friction_label": "Unclear requirements", "example": "Requirements change mid-sprint", "how_often": "Weekly", "pain_level": 4, "who_affects": "All developers", "justification": "The transcript says requirements change mid-sprint and uses team-wide language, so this affects shared goal clarity and flow.", "dimensions": ["goal_clarity", "flow_state"]}}, {{"stage": "Testing", "friction_label": "Flaky tests", "example": "Tests fail randomly", "how_often": "Daily", "pain_level": 5, "who_affects": "All developers", "justification": "The transcript says tests fail randomly and nobody trusts them, indicating frequent team-wide feedback-loop friction.", "dimensions": ["feedback_loops"]}}]}}
 
 Return only JSON object, no other text."""
 

@@ -14,6 +14,7 @@ class FrictionPoint(BaseModel):
     how_often: str  # Daily|Weekly|Occasionally|Rarely
     pain_level: int  # 1-5
     who_affects: str
+    justification: str
     dimensions: List[str]  # dimension keys from dimensions.py
 
 class DevExSummary(BaseModel):

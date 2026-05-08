@@ -16,6 +16,13 @@ logger = logging.getLogger(__name__)
 
 def synthesize_summary(friction_points: List[FrictionPoint]) -> DevExSummary:
     """Generate DevEx summary from classified friction points."""
+    if not friction_points:
+        return DevExSummary(
+            most_affected_dimensions=[],
+            highest_pain_stage="No friction identified",
+            total_friction_points=0,
+        )
+
     # Convert friction points to JSON for prompt
     friction_points_data = [fp.dict() for fp in friction_points]
     friction_points_text = json.dumps(friction_points_data, indent=2)

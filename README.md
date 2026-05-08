@@ -20,5 +20,6 @@ A full-stack course project scaffold for mapping developer interview transcripts
 ## Notes
 
 - OpenAI API key should be stored in `.env` as `OPENAI_API_KEY`
+- Optional sharing control: set `APP_ACCESS_CODE` to require a private access code for analysis
 - Do not hardcode dimension names outside `config/dimensions.py`
 - `.gitignore` excludes `.env`, `.venv/`, and common generated files
