@@ -23,3 +23,10 @@ A full-stack course project scaffold for mapping developer interview transcripts
 - Optional sharing control: set `APP_ACCESS_CODE` to require a private access code for analysis
 - Do not hardcode dimension names outside `config/dimensions.py`
 - `.gitignore` excludes `.env`, `.venv/`, and common generated files
+
+## License
+
+Copyright (c) 2026 Noshin Tahsin. All rights reserved.
+No permission is granted to use, copy, modify, or distribute this software without prior written consent.
+
+This repository is public for viewing only and is not licensed for reuse.
