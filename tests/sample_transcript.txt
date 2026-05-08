@@ -1,0 +1,14 @@
+# Sample interview transcript placeholder for DX Friction Cartographer
+"So in planning, we use Jira for tickets and Confluence for docs, but honestly the tickets are almost always vague. Requirements change mid-sprint constantly — product will just drop a new priority and we have to stop what we're doing. That's probably my biggest frustration. We spend so much time in clarification meetings instead of actually building.
+
+For coding, I'm in VS Code, we use GitHub for version control and recently started using Copilot. Copilot is great but not everyone uses it — there's no standard. Some people are on it, some aren't, so knowledge sharing is inconsistent. We also have a branching strategy that nobody fully agrees on so there's confusion every time someone opens a PR.
+
+Code review is slow. Like, really slow. Sometimes a PR sits for 3-4 days before anyone looks at it. And when people do review, the feedback is often nitpicky — style stuff, not substance. It doesn't feel like we're actually learning from reviews, just checking boxes.
+
+Testing is a nightmare. We use Jest and Cypress but our test suite is full of flaky tests. They fail randomly and nobody trusts them anymore. So people just re-run until they pass and merge. Our CI pipeline is also on GitHub Actions and it takes about 25 minutes to run — which means you're just sitting there waiting or you context switch to something else and then forget where you were.
+
+Deployment is manual. We have a checklist in Notion with like 15 steps and if you miss one the deploy breaks. It's happened multiple times. We've talked about automating it but nobody owns it so it just stays broken. Deployments happen maybe once every two weeks because everyone is scared to touch it.
+
+In terms of observability, we have some basic monitoring with DataDog but it's not integrated well with our alerting. When something goes wrong in production, it takes forever to figure out what happened because the logs are scattered across different services. We don't have good dashboards for understanding system health day-to-day.
+
+Overall, I love the product we're building and the team is great, but the development process feels really inefficient. There's so much waiting and rework that it kills my motivation. I wish we could just focus on writing code and shipping features without all the friction."
