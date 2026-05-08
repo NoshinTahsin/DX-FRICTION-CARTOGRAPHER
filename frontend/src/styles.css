@@ -419,6 +419,32 @@ textarea {
   padding: 3px 8px;
 }
 
+.rationale-tag {
+  position: relative;
+}
+
+.rationale-content {
+  background: #162033;
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  color: #ffffff;
+  display: none;
+  font-size: 12px;
+  font-weight: 500;
+  left: 0;
+  line-height: 1.45;
+  padding: 10px;
+  position: absolute;
+  white-space: normal;
+  width: min(300px, 70vw);
+  z-index: 6;
+}
+
+.rationale-tag:hover .rationale-content,
+.rationale-tag:focus-within .rationale-content {
+  display: block;
+}
+
 .dimension-grid {
   display: grid;
   gap: 12px;

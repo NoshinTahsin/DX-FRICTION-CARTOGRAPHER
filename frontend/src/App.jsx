@@ -126,7 +126,7 @@ export default function App() {
       dimensionCount: dimensionKeys.size,
       frictionText: `${result.friction_points.length} friction point${result.friction_points.length === 1 ? "" : "s"} extracted from the transcript. Click to jump to the friction table.`,
       painText: highestStage
-        ? `Formula: impact = average pain x log2(friction count + 1). Calculation: ${highestStage.stage} = ${highestStage.average.toFixed(1)} x log2(${highestStage.count} + 1) = ${highestStage.impact.toFixed(1)}. Click to jump to the friction table.`
+        ? `Formula: impact = average pain x log2(friction count + 1). Calculation: ${highestStage.stage} = ${highestStage.average.toFixed(1)} x log2(${highestStage.count} + 1) = ${highestStage.impact.toFixed(1)}. This is a relative score for comparing stages, not a percentage or score out of 10. Click to jump to the friction table.`
         : "No friction identified, so no highest pain stage was calculated.",
       dimensionText: topDimensions
         ? `${dimensionKeys.size} distinct DX dimension${dimensionKeys.size === 1 ? "" : "s"} identified: ${topDimensions}. Click to jump to the dimension cards.`

@@ -51,8 +51,13 @@ export default function DimensionAffectedView({ frictionPoints = [], dimensions 
             <p>{dim.definition}</p>
             <div className="stack">
               {points.map((point, index) => (
-                <span className="tag" key={`${point.stage}-${point.friction_label}-${index}`}>
+                <span className="tag rationale-tag" key={`${point.stage}-${point.friction_label}-${index}`}>
                   {point.stage}: {point.friction_label}
+                  {point.justification ? (
+                    <span className="rationale-content" role="tooltip">
+                      {point.justification}
+                    </span>
+                  ) : null}
                 </span>
               ))}
             </div>
