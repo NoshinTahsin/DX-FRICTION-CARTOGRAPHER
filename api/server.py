@@ -15,7 +15,7 @@ app = FastAPI(title="DX Friction Cartographer API")
 # CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,8 +26,8 @@ async def analyze_transcript(request: AnalyzeRequest) -> AnalysisResult:
     """Analyze a developer interview transcript for DX friction."""
     try:
         # Validate API key
-        if not os.getenv("ANTHROPIC_API_KEY"):
-            raise HTTPException(status_code=500, detail="API key not configured")
+        if not os.getenv("OPENAI_API_KEY"):
+            raise HTTPException(status_code=500, detail="OpenAI API key not configured")
 
         # Run the analysis pipeline
         result = run_pipeline(request.transcript)
@@ -40,9 +40,9 @@ async def analyze_transcript(request: AnalyzeRequest) -> AnalysisResult:
 
 @app.on_event("startup")
 async def startup_event():
-    key = os.getenv("ANTHROPIC_API_KEY")
-    print(f"API key loaded: {bool(key)}")
-    print(f"Key starts with: {key[:10] if key else 'NOT FOUND'}")
+    key = os.getenv("OPENAI_API_KEY")
+    print(f"OpenAI API key loaded: {bool(key)}")
+    print(f"OpenAI model: {os.getenv('OPENAI_MODEL', 'gpt-5.1')}")
 
 @app.get("/health")
 async def health_check():

@@ -1,14 +1,13 @@
 # Classifier stage for mapping friction signals to DX dimensions
-# Uses dynamic prompts built from config/dimensions.py
+# Uses OpenAI with dynamic prompts built from config/dimensions.py
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
-import os
 import json
 import logging
 from typing import List
-from anthropic import Anthropic
+from pipeline.openai_client import create_json_response
 from pipeline.prompts import build_classification_prompt
 from config.dimensions import DIMENSIONS
 from api.models import FrictionPoint
@@ -18,24 +17,19 @@ logger = logging.getLogger(__name__)
 
 def classify_friction_points(friction_signals: List[str]) -> List[FrictionPoint]:
     """Classify friction signals against DX dimensions."""
-    client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-
     friction_signals_text = "\n".join(f"- {signal}" for signal in friction_signals)
     prompt = build_classification_prompt()
     user_message = f"{prompt}\n\nFRICTION SIGNALS:\n{friction_signals_text}"
 
     for attempt in range(2):  # Retry once on failure
         try:
-            response = client.messages.create(
-                model="claude-sonnet-4-5",
-                max_tokens=4000,
-                temperature=0,
-                system="You are a developer experience analyst. Return ONLY valid JSON. No markdown. No explanation. No code fences. Just the raw JSON array.",
-                messages=[{"role": "user", "content": user_message}]
+            result_text = create_json_response(
+                user_message=user_message,
+                max_output_tokens=4000,
+                instructions="You are a developer experience analyst. Return only valid JSON matching the requested object shape.",
             )
 
-            result_text = response.content[0].text
-            logger.debug(f"Raw Claude response: {result_text}")
+            logger.debug(f"Raw OpenAI response: {result_text}")
             result_text = result_text.strip()
             
             # Try to extract JSON if there's markdown fencing
@@ -45,7 +39,7 @@ def classify_friction_points(friction_signals: List[str]) -> List[FrictionPoint]
                     result_text = result_text[4:]
                 result_text = result_text.strip()
             
-            result = json.loads(result_text)
+            result = json.loads(result_text)["friction_points"]
 
             # Validate and filter dimensions
             friction_points = []

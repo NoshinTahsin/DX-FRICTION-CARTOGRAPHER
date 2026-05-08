@@ -1,14 +1,13 @@
 # Synthesizer stage for summary generation from classified friction points
-# Uses Claude API to create insights and output formats
+# Uses OpenAI API to create insights and output formats
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
-import os
 import json
 import logging
 from typing import List
-from anthropic import Anthropic
+from pipeline.openai_client import create_json_response
 from pipeline.prompts import build_synthesis_prompt
 from api.models import DevExSummary, FrictionPoint
 
@@ -17,8 +16,6 @@ logger = logging.getLogger(__name__)
 
 def synthesize_summary(friction_points: List[FrictionPoint]) -> DevExSummary:
     """Generate DevEx summary from classified friction points."""
-    client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-
     # Convert friction points to JSON for prompt
     friction_points_data = [fp.dict() for fp in friction_points]
     friction_points_text = json.dumps(friction_points_data, indent=2)
@@ -28,16 +25,13 @@ def synthesize_summary(friction_points: List[FrictionPoint]) -> DevExSummary:
 
     for attempt in range(2):  # Retry once on failure
         try:
-            response = client.messages.create(
-                model="claude-sonnet-4-5",
-                max_tokens=2000,
-                temperature=0,
-                system="You are a developer experience analyst. Return ONLY valid JSON. No markdown. No explanation. No code fences. Just the raw JSON object.",
-                messages=[{"role": "user", "content": user_message}]
+            result_text = create_json_response(
+                user_message=user_message,
+                max_output_tokens=2000,
+                instructions="You are a developer experience analyst. Return only valid JSON matching the requested object shape.",
             )
 
-            result_text = response.content[0].text
-            logger.debug(f"Raw Claude response: {result_text}")
+            logger.debug(f"Raw OpenAI response: {result_text}")
             result_text = result_text.strip()
             
             # Try to extract JSON if there's markdown fencing

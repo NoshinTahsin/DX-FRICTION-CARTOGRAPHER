@@ -1,4 +1,4 @@
-# Dynamic prompt builder for Claude API calls
+# Dynamic prompt builder for AI API calls
 # All prompt content must be derived from config/dimensions.py
 from config.dimensions import DIMENSIONS
 
@@ -37,10 +37,10 @@ DX DIMENSIONS:
 For each friction signal, assign 1-3 dimensions that are clearly affected.
 Infer stage, how_often, pain_level (1-5), and who_affects from context.
 
-Return ONLY valid JSON array like this:
-[{{"stage": "Planning", "friction_label": "Unclear requirements", "example": "Requirements change mid-sprint", "how_often": "Weekly", "pain_level": 4, "who_affects": "All developers", "dimensions": ["goal_clarity", "flow_state"]}}, {{"stage": "Testing", "friction_label": "Flaky tests", "example": "Tests fail randomly", "how_often": "Daily", "pain_level": 5, "who_affects": "All developers", "dimensions": ["feedback_loops"]}}]
+Return ONLY valid JSON object like this:
+{{"friction_points": [{{"stage": "Planning", "friction_label": "Unclear requirements", "example": "Requirements change mid-sprint", "how_often": "Weekly", "pain_level": 4, "who_affects": "All developers", "dimensions": ["goal_clarity", "flow_state"]}}, {{"stage": "Testing", "friction_label": "Flaky tests", "example": "Tests fail randomly", "how_often": "Daily", "pain_level": 5, "who_affects": "All developers", "dimensions": ["feedback_loops"]}}]}}
 
-Return only JSON array, no other text."""
+Return only JSON object, no other text."""
 
     return prompt
 

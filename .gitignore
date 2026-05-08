@@ -10,6 +10,7 @@ __pycache__/
 node_modules/
 
 dist/
+*.log
 
 # MacOS
 .DS_Store

@@ -4,7 +4,7 @@ A full-stack course project scaffold for mapping developer interview transcripts
 
 ## Architecture
 
-- Python FastAPI backend with a 3-stage Claude AI pipeline
+- Python FastAPI backend with a 3-stage OpenAI pipeline
 - React frontend with interactive dimension cards and tables
 - Single source of truth for DX dimensions in `config/dimensions.py`
 - Export support planned for JSON, Markdown, and PDF
@@ -12,13 +12,13 @@ A full-stack course project scaffold for mapping developer interview transcripts
 ## Project structure
 
 - `config/`: central DX dimension dictionary and package config
-- `pipeline/`: Claude prompt builder and pipeline stage stubs
+- `pipeline/`: AI prompt builder and pipeline stage stubs
 - `api/`: FastAPI server and data models
 - `frontend/`: React UI scaffolding
 - `tests/`: sample transcript and test entrypoint
 
 ## Notes
 
-- API key should be stored in `.env`
+- OpenAI API key should be stored in `.env` as `OPENAI_API_KEY`
 - Do not hardcode dimension names outside `config/dimensions.py`
 - `.gitignore` excludes `.env`, `.venv/`, and common generated files
